@@ -45,7 +45,6 @@ function cargarProductos() {
         });
     });
 }
-
 function agregarAlCarrito(id) {
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     const product = productos.find(product => product.id === id);
@@ -67,7 +66,6 @@ function agregarAlCarrito(id) {
     localStorage.setItem('carrito', JSON.stringify(carrito));
     mostrarCarrito();
 }
-
 function mostrarCarrito() {
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     let contenedorCarrito = document.querySelector('.carrito');
@@ -95,8 +93,9 @@ function mostrarCarrito() {
         });
     });
 
-    let totalCarrito = carrito.reduce((acc, p) => acc + p.precioTotal, 0);
+    let totalCarrito = sumarTotal(...carrito);
 
+    //Intente realizar el condicional con el operador lógico AND pero no se bien por cual razon me daba error cuando ponia el ( += ).!
     if (agregarEnvio) {
         totalCarrito += costoEnvio;
     }
@@ -106,7 +105,6 @@ function mostrarCarrito() {
 
     carrito.length > 0 ? comprobarPedido("Pedido confirmado!"):comprobarPedido("Selecciona productos para confirmar tu pedido!");
 }
-
 function eliminarDelCarrito(id) {
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     carrito = carrito.filter(p => p.id !== id);
@@ -118,4 +116,7 @@ function comprobarPedido(dato){
         btnConfirmar.addEventListener('click', () => {
             Swal.fire(dato);
         })
+}
+function sumarTotal(...lista){
+    return lista.reduce((acc, p) => acc + p.precioTotal, 0);
 }
